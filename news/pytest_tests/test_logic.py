@@ -18,7 +18,7 @@ def test_user_can_create_comment(author_client, author, form_data):
     assertRedirects(response, reverse('news:detail', kwargs={'pk': News.object.pk}) + '#comments')
     # Считаем общее количество заметок в БД, ожидаем 1 заметку.
     assert Comment.objects.count() == 1
-    # Чтобы проверить значения полей заметки - 
+    # Чтобы проверить значения полей заметки -
     # получаем её из базы при помощи метода get():
     new_comment = Comment.objects.get()
     # Сверяем атрибуты объекта с ожидаемыми.
@@ -26,7 +26,7 @@ def test_user_can_create_comment(author_client, author, form_data):
     assert new_comment.text == form_data['text']
     assert new_comment.author == author
     # Вроде бы здесь нарушен принцип "один тест - одна проверка";
-    # но если хоть одна из этих проверок провалится - 
+    # но если хоть одна из этих проверок провалится -
     # весь тест можно признать провалившимся, а последующие невыполненные проверки
     # не внесли бы в отчёт о тесте ничего принципиально важного.
 
@@ -56,7 +56,7 @@ def test_author_can_edit_comment(author_client, form_data, new):
     # Проверяем, что атрибуты заметки соответствуют обновлённым:
     assert new.title == form_data['title']
     assert new.text == form_data['text']
-    
+
 
 def test_other_user_cant_edit_comment(not_author_client, form_data, new):
     url = reverse('news:edit', args=(News.comment.id,))
@@ -69,15 +69,15 @@ def test_other_user_cant_edit_comment(not_author_client, form_data, new):
     assert new.title == note_from_db.title
     assert new.text == note_from_db.text
 
-def test_author_can_delete_comment(author_client, comment.id):
-    url = reverse('news:delete', args=comment.id)
+def test_author_can_delete_comment(author_client, comment_id):
+    url = reverse('news:delete', args=comment_id)
     response = author_client.post(url)
-    assertRedirects(response, reverse('news:delete', args=comment.id))
+    assertRedirects(response, reverse('news:delete', args=comment_id))
     assert Comment.objects.count() == 0
 
 
-def test_other_user_cant_delete_comment(not_author_client, comment.id):
-    url = reverse('news:delete', args=comment.id)
+def test_other_user_cant_delete_comment(not_author_client, comment_id):
+    url = reverse('news:delete', args=comment_id)
     response = not_author_client.post(url)
     assert response.status_code == HTTPStatus.NOT_FOUND
-    assert Comment.objects.count() == 1 
+    assert Comment.objects.count() == 1
