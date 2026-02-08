@@ -66,23 +66,34 @@ def one_news(author):
     return news
 
 @pytest.fixture
+def comment(one_news, author):
+    comment = Comment.objects.create(
+            news=one_news, author=author, text=f'Tекст',
+        )
+    return comment
+
+@pytest.fixture
 def one_news_id(one_news):
     return (one_news.id,)
 
 @pytest.fixture
-def comment_id(one_news, author):
-    comment = Comment.objects.create(
-            news=one_news, author=author, text=f'Tекст',
-        )
+def comment_id(comment, author):
     return (comment.id,)
 
 
 @pytest.fixture
 def form_data():
     return {
-        'title': 'Новый заголовок',
         'text': 'Новый текст',
     }
+
+
+@pytest.fixture
+def bad_words_data():
+    return {
+        'text': 'Плохой текст',
+    }
+
 
 @pytest.fixture
 def news_author_comments(author):

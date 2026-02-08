@@ -9,6 +9,7 @@ from django.urls import reverse
 from news.models import News, Comment
 
 
+@pytest.mark.django_db
 @pytest.mark.parametrize(
     'name, args',
     [
