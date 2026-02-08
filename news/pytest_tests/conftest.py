@@ -54,7 +54,28 @@ def news(author):
         for index in range(settings.NEWS_COUNT_ON_HOME_PAGE + 1)
     ]
     News.objects.bulk_create(all_news)
+    return all_news
+
+@pytest.fixture
+def one_news(author):
+    news = News.objects.create(
+        title='Заголовок',
+        text='Текст заметки',
+        date = datetime.today()
+    )
     return news
+
+@pytest.fixture
+def one_news_id(one_news):
+    return (one_news.id,)
+
+@pytest.fixture
+def comment_id(one_news, author):
+    comment = Comment.objects.create(
+            news=one_news, author=author, text=f'Tекст',
+        )
+    return (comment.id,)
+
 
 @pytest.fixture
 def form_data():
