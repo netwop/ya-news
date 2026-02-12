@@ -1,12 +1,9 @@
-import pytest
-from pytest_django.asserts import assertRedirects
-
-from pytest_lazy_fixtures import lf
 from http import HTTPStatus
 
+import pytest
+from pytest_django.asserts import assertRedirects
+from pytest_lazy_fixtures import lf
 from django.urls import reverse
-
-from news.models import News, Comment
 
 
 @pytest.mark.django_db
@@ -16,7 +13,7 @@ from news.models import News, Comment
         ('news:home', None),
         ('users:login', None),
         ('users:signup', None),
-        ('news:detail', lf('one_news_id'))
+        ('news:detail', lf('one_news_id_for_args'))
     ],
 )
 def test_pages_availability_for_anonymous_user(client, name, args):
@@ -42,8 +39,8 @@ def test_logout_availability_for_anonymous_user(client):
 @pytest.mark.parametrize(
    'name, args',
     [
-      ('news:edit', lf('comment_id')),
-      ('news:delete', lf('comment_id')),
+      ('news:edit', lf('comment_id_for_args')),
+      ('news:delete', lf('comment_id_for_args')),
     ],
 )
 def test_pages_availability_for_different_users(
@@ -57,8 +54,8 @@ def test_pages_availability_for_different_users(
 @pytest.mark.parametrize(
     'name, args',
     [
-        ('news:edit', lf('comment_id')),
-        ('news:delete', lf('comment_id')),
+        ('news:edit', lf('comment_id_for_args')),
+        ('news:delete', lf('comment_id_for_args')),
     ],
 )
 def test_redirects(client, name, args):
