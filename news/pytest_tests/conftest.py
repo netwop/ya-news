@@ -56,7 +56,7 @@ def one_news(author):
     news = News.objects.create(
         title='Заголовок',
         text='Текст заметки',
-        date = datetime.today()
+        date=datetime.today()
     )
     return news
 
@@ -64,8 +64,8 @@ def one_news(author):
 @pytest.fixture
 def comment(one_news, author):
     comment = Comment.objects.create(
-            news=one_news, author=author, text=f'Tекст',
-        )
+        news=one_news, author=author, text='Tекст',
+    )
     return comment
 
 

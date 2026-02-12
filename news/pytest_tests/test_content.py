@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 from news.forms import CommentForm
@@ -28,7 +27,9 @@ def test_news_order(news, author_client):
 
 
 def test_comments_order(one_news_with_author_comments, author_client):
-    response = author_client.get(news_detail_url(one_news_with_author_comments.id))
+    response = author_client.get(
+        news_detail_url(one_news_with_author_comments.id)
+    )
     news_from_response = response.context['news']
     all_comments = news_from_response.comment_set.all()
     all_timestamps = [comment.created for comment in all_comments]
@@ -41,7 +42,11 @@ def test_anonymous_client_has_no_form(one_news_with_author_comments, client):
     assert 'form' not in response.context
 
 
-def test_authorized_client_has_form(one_news_with_author_comments, author_client):
-    response = author_client.get(news_detail_url(one_news_with_author_comments.id))
+def test_authorized_client_has_form(
+    one_news_with_author_comments, author_client
+):
+    response = author_client.get(
+        news_detail_url(one_news_with_author_comments.id)
+    )
     assert 'form' in response.context
     assert isinstance(response.context['form'], CommentForm)

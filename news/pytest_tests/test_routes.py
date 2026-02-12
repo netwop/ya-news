@@ -37,15 +37,15 @@ def test_logout_availability_for_anonymous_user(client):
     ],
 )
 @pytest.mark.parametrize(
-   'name, args',
+    'name, args',
     [
-      ('news:edit', lf('comment_id_for_args')),
-      ('news:delete', lf('comment_id_for_args')),
+        ('news:edit', lf('comment_id_for_args')),
+        ('news:delete', lf('comment_id_for_args')),
     ],
 )
 def test_pages_availability_for_different_users(
     parametrized_client, name, args, expected_status
-    ):
+):
     url = reverse(name, args=args)
     response = parametrized_client.get(url)
     assert response.status_code == expected_status
